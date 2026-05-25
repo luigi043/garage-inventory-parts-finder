@@ -51,3 +51,7 @@
 - [ ] Add deployment notes.
 - [ ] Polish UI.
 - [ ] Finalize README.
+## Active Tasks
+
+- [ ] Create ASP.NET Core solution. Status: Started in ackend/README.md.
+- [ ] Create frontend app. Status: Started in rontend/README.md.
