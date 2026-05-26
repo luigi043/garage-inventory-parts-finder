@@ -11,11 +11,11 @@
 - [x] Write objective and target user.
 - [x] Define main workflow.
 - [x] List core entities.
-- [ ] Create ASP.NET Core solution.
-- [ ] Create frontend app.
-- [ ] Add Docker database setup.
-- [ ] Add first EF Core migration.
-- [ ] Update README with real run commands.
+- [x] Create ASP.NET Core solution.
+- [x] Create frontend app.
+- [x] Add Docker database setup.
+- [x] Add first EF Core migration.
+- [x] Update README with real run commands.
 
 ## Day 2 - Backend
 
@@ -51,7 +51,12 @@
 - [ ] Add deployment notes.
 - [ ] Polish UI.
 - [ ] Finalize README.
+
 ## Active Tasks
 
-- [ ] Create ASP.NET Core solution. Status: Started in ackend/README.md.
-- [ ] Create frontend app. Status: Started in rontend/README.md.
+- [x] Create ASP.NET Core solution.
+- [x] Create frontend app.
+- [x] Add Docker database setup.
+- [x] Add first EF Core migration.
+- [x] Update README with real run commands.
+- [ ] Next task: add authentication.

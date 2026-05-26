@@ -2,21 +2,16 @@
 
 This is the active tasklist for the first portfolio sprint.
 
-## Started
-
-- [x] Start backend scaffold task by adding ackend/README.md
-- [x] Start frontend scaffold task by adding rontend/README.md
-
 ## Day 1 - Scope And Setup
 
 - [x] Create separate project repository
 - [x] Create initial starter commit
 - [x] Document objective, target user, workflow, stack, and entities
-- [ ] Create ASP.NET Core solution
-- [ ] Create frontend app
-- [ ] Add Docker database setup
-- [ ] Add first EF Core migration
-- [ ] Update README with exact run commands
+- [x] Create ASP.NET Core solution
+- [x] Create frontend app
+- [x] Add Docker database setup
+- [x] Add first EF Core migration
+- [x] Update README with exact run commands
 
 ## Day 2 - Backend
 

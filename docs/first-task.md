@@ -1,15 +1,15 @@
 # First Task - Day 1 Scope And Setup
 
-Status: Started
+Status: Completed.
 
-Completed in this starter commit:
+Completed:
 
-- Created the dedicated local Git repository.
-- Added starter README.
-- Added task board.
-- Documented objective, target user, main workflow, core entities, and advanced feature.
-- Added placeholder backend, frontend, and docs folders.
+- Created the ASP.NET Core backend solution.
+- Created the frontend React TypeScript scaffold.
+- Added PostgreSQL Docker Compose setup.
+- Added EF Core persistence and the first migration.
+- Updated README run commands and task docs.
 
 Next action:
 
-Create the real ASP.NET Core backend solution and frontend project inside this repository.
+Start Day 2 by adding authentication and protected API routes.

@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/GarageInventoryPartsFinder.Api/GarageInventoryPartsFinder.Api.csproj" />
+    <Project Path="src/GarageInventoryPartsFinder.Application/GarageInventoryPartsFinder.Application.csproj" />
+    <Project Path="src/GarageInventoryPartsFinder.Domain/GarageInventoryPartsFinder.Domain.csproj" />
+    <Project Path="src/GarageInventoryPartsFinder.Infrastructure/GarageInventoryPartsFinder.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/GarageInventoryPartsFinder.Tests/GarageInventoryPartsFinder.Tests.csproj" />
+  </Folder>
+</Solution>

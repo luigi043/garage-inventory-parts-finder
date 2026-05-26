@@ -1,6 +1,6 @@
 # Garage Inventory And Parts Finder
 
-> Portfolio-level Automotive Tech project planned as a 5-day .NET full-stack MVP.
+> Portfolio-level full-stack project planned as a 5-day .NET MVP.
 
 ## Objective
 
@@ -20,7 +20,7 @@ Compatibility checker for vehicles, parts, and supplier options.
 
 ## Recommended Stack
 
-ASP.NET Core Web API, React, TypeScript, PostgreSQL, EF Core, JWT auth.
+ASP.NET Core Web API, React, TypeScript, PostgreSQL, EF Core, JWT auth, and Docker Compose.
 
 ## Core Entities
 
@@ -44,25 +44,48 @@ ASP.NET Core Web API, React, TypeScript, PostgreSQL, EF Core, JWT auth.
 ## Current Status
 
 - Repository scaffold created.
-- First Day 1 task started: objective, target user, workflow, stack, and entities are documented.
-- Next task: create the real ASP.NET Core solution and frontend app.
+- Backend ASP.NET Core solution created in ackend/GarageInventoryPartsFinder.slnx.
+- Frontend React TypeScript app scaffold created in rontend/.
+- PostgreSQL Docker Compose setup added.
+- EF Core persistence layer and InitialCreate migration added.
+- Day 1 setup complete.
 
 ## Local Development
 
-Planned commands:
+Copy environment defaults:
+
+`ash
+copy .env.example .env
+`
+
+Start PostgreSQL:
 
 `ash
 docker compose up -d
-cd backend
-dotnet restore
-dotnet run
 `
+
+Backend:
+
+`ash
+cd backend
+dotnet restore GarageInventoryPartsFinder.slnx
+dotnet ef database update --project src/GarageInventoryPartsFinder.Infrastructure --startup-project src/GarageInventoryPartsFinder.Api --context GarageInventoryPartsFinderDbContext
+dotnet run --project src/GarageInventoryPartsFinder.Api
+`
+
+Frontend:
 
 `ash
 cd frontend
 npm install
 npm run dev
 `
+
+## Database
+
+- Database: $DatabaseName
+- Host port: $Port
+- Provider: PostgreSQL via Npgsql Entity Framework Core provider
 
 ## Demo Notes
 
