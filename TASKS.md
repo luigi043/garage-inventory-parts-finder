@@ -19,13 +19,13 @@
 
 ## Day 2 - Backend
 
-- [ ] Add authentication.
-- [ ] Add refresh token flow.
-- [ ] Add protected endpoints.
-- [ ] Implement core entities.
-- [ ] Add validation.
-- [ ] Add seed data.
-- [ ] Add backend tests.
+- [x] Add authentication.
+- [x] Add refresh token flow.
+- [x] Add protected endpoints.
+- [x] Implement core entities.
+- [x] Add validation.
+- [x] Add seed data.
+- [x] Add backend tests.
 
 ## Day 3 - Frontend
 
@@ -38,7 +38,7 @@
 
 ## Day 4 - Advanced Feature
 
-- [ ] Implement: Compatibility checker for vehicles, parts, and supplier options.
+- [ ] Implement advanced feature.
 - [ ] Add frontend support.
 - [ ] Add backend support.
 - [ ] Add at least one test or documented manual test.
@@ -54,9 +54,6 @@
 
 ## Active Tasks
 
-- [x] Create ASP.NET Core solution.
-- [x] Create frontend app.
-- [x] Add Docker database setup.
-- [x] Add first EF Core migration.
-- [x] Update README with real run commands.
-- [ ] Next task: add authentication.
+- [x] Complete Day 1 setup.
+- [x] Complete Day 2 backend foundation.
+- [ ] Next task: add frontend app shell and auth screens.

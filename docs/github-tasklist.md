@@ -15,13 +15,13 @@ This is the active tasklist for the first portfolio sprint.
 
 ## Day 2 - Backend
 
-- [ ] Add authentication
-- [ ] Add refresh token flow
-- [ ] Add protected endpoints
-- [ ] Implement core entities
-- [ ] Add validation
-- [ ] Add seed data
-- [ ] Add backend tests
+- [x] Add authentication
+- [x] Add refresh token flow
+- [x] Add protected endpoints
+- [x] Implement core entities
+- [x] Add validation
+- [x] Add seed data
+- [x] Add backend tests
 
 ## Day 3 - Frontend
 
@@ -34,7 +34,7 @@ This is the active tasklist for the first portfolio sprint.
 
 ## Day 4 - Advanced Feature
 
-- [ ] Implement advanced feature: Compatibility checker for vehicles, parts, and supplier options.
+- [ ] Implement advanced feature
 - [ ] Add frontend support
 - [ ] Add backend support
 - [ ] Add at least one test or documented manual test
@@ -47,7 +47,3 @@ This is the active tasklist for the first portfolio sprint.
 - [ ] Add deployment notes
 - [ ] Polish UI
 - [ ] Finalize README
-
-## Main Workflow
-
-The user adds vehicles and parts, marks compatibility, tracks stock location and supplier, then searches for parts that fit a selected car.

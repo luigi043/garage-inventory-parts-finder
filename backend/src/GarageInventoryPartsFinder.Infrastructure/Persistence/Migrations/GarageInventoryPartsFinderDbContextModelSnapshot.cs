@@ -22,6 +22,43 @@ namespace GarageInventoryPartsFinder.Infrastructure.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.AuthUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .IsUnique();
+
+                    b.ToTable("AuthUsers");
+                });
+
             modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.Part", b =>
                 {
                     b.Property<Guid>("Id")
@@ -98,6 +135,39 @@ namespace GarageInventoryPartsFinder.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PurchaseRecordRecords");
+                });
+
+            modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthUserId");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.StockLocation", b =>
@@ -228,6 +298,22 @@ namespace GarageInventoryPartsFinder.Infrastructure.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("VehicleRecords");
+                });
+
+            modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("GarageInventoryPartsFinder.Domain.Entities.AuthUser", "AuthUser")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("AuthUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AuthUser");
+                });
+
+            modelBuilder.Entity("GarageInventoryPartsFinder.Domain.Entities.AuthUser", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

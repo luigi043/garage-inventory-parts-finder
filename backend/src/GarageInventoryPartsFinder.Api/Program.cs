@@ -1,41 +1,254 @@
+using System.Security.Claims;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using GarageInventoryPartsFinder.Api.Authentication;
+using GarageInventoryPartsFinder.Application.Authentication;
+using GarageInventoryPartsFinder.Application.Validation;
+using GarageInventoryPartsFinder.Domain.Entities;
+using GarageInventoryPartsFinder.Infrastructure.Persistence;
+using GarageInventoryPartsFinder.Infrastructure.Seed;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
+builder.Services.AddSingleton<PasswordHasher>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddDbContext<GarageInventoryPartsFinderDbContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+var jwtOptions = builder.Configuration.GetSection("Jwt").Get<JwtOptions>() ?? new JwtOptions();
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtOptions.Issuer,
+            ValidAudience = jwtOptions.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SigningKey)),
+            ClockSkew = TimeSpan.FromMinutes(1)
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("/api/health", () => Results.Ok(new { status = "ok", timestampUtc = DateTime.UtcNow }));
 
-app.MapGet("/weatherforecast", () =>
+var auth = app.MapGroup("/api/auth");
+
+auth.MapPost("/register", async (
+    RegisterRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    PasswordHasher passwordHasher,
+    TokenService tokenService,
+    CancellationToken cancellationToken) =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    var errors = AuthRequestValidator.ValidateRegister(request);
+    if (errors.Count > 0)
+    {
+        return Results.ValidationProblem(errors);
+    }
+
+    var normalizedEmail = request.Email.Trim().ToUpperInvariant();
+    if (await dbContext.AuthUsers.AnyAsync(user => user.NormalizedEmail == normalizedEmail, cancellationToken))
+    {
+        return Results.Conflict(new { message = "A user with this email already exists." });
+    }
+
+    var user = new AuthUser
+    {
+        Email = request.Email.Trim(),
+        NormalizedEmail = normalizedEmail,
+        DisplayName = request.DisplayName.Trim(),
+        PasswordHash = passwordHasher.HashPassword(request.Password)
+    };
+
+    var refreshToken = tokenService.CreateRefreshToken();
+    user.RefreshTokens.Add(new RefreshToken
+    {
+        TokenHash = tokenService.HashRefreshToken(refreshToken),
+        ExpiresAtUtc = tokenService.GetRefreshTokenExpiryUtc()
+    });
+
+    dbContext.AuthUsers.Add(user);
+    await dbContext.SaveChangesAsync(cancellationToken);
+
+    return Results.Created($"/api/auth/users/{user.Id}", tokenService.CreateResponse(user, refreshToken));
+});
+
+auth.MapPost("/login", async (
+    LoginRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    PasswordHasher passwordHasher,
+    TokenService tokenService,
+    CancellationToken cancellationToken) =>
+{
+    var errors = AuthRequestValidator.ValidateLogin(request);
+    if (errors.Count > 0)
+    {
+        return Results.ValidationProblem(errors);
+    }
+
+    var normalizedEmail = request.Email.Trim().ToUpperInvariant();
+    var user = await dbContext.AuthUsers
+        .Include(item => item.RefreshTokens)
+        .SingleOrDefaultAsync(item => item.NormalizedEmail == normalizedEmail, cancellationToken);
+
+    if (user is null || !passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+    {
+        return Results.Unauthorized();
+    }
+
+    var refreshToken = tokenService.CreateRefreshToken();
+    user.RefreshTokens.Add(new RefreshToken
+    {
+        TokenHash = tokenService.HashRefreshToken(refreshToken),
+        ExpiresAtUtc = tokenService.GetRefreshTokenExpiryUtc()
+    });
+
+    await dbContext.SaveChangesAsync(cancellationToken);
+
+    return Results.Ok(tokenService.CreateResponse(user, refreshToken));
+});
+
+auth.MapPost("/refresh", async (
+    RefreshTokenRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    TokenService tokenService,
+    CancellationToken cancellationToken) =>
+{
+    if (string.IsNullOrWhiteSpace(request.RefreshToken))
+    {
+        return Results.ValidationProblem(new Dictionary<string, string[]>
+        {
+            ["refreshToken"] = ["Refresh token is required."]
+        });
+    }
+
+    var tokenHash = tokenService.HashRefreshToken(request.RefreshToken);
+    var storedToken = await dbContext.RefreshTokens
+        .Include(item => item.AuthUser)
+        .SingleOrDefaultAsync(item => item.TokenHash == tokenHash, cancellationToken);
+
+    if (storedToken?.AuthUser is null || !storedToken.IsActive)
+    {
+        return Results.Unauthorized();
+    }
+
+    storedToken.RevokedAtUtc = DateTime.UtcNow;
+    var refreshToken = tokenService.CreateRefreshToken();
+    storedToken.AuthUser.RefreshTokens.Add(new RefreshToken
+    {
+        TokenHash = tokenService.HashRefreshToken(refreshToken),
+        ExpiresAtUtc = tokenService.GetRefreshTokenExpiryUtc()
+    });
+
+    await dbContext.SaveChangesAsync(cancellationToken);
+
+    return Results.Ok(tokenService.CreateResponse(storedToken.AuthUser, refreshToken));
+});
+
+auth.MapPost("/logout", async (
+    RefreshTokenRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    TokenService tokenService,
+    CancellationToken cancellationToken) =>
+{
+    var tokenHash = tokenService.HashRefreshToken(request.RefreshToken);
+    var storedToken = await dbContext.RefreshTokens.SingleOrDefaultAsync(item => item.TokenHash == tokenHash, cancellationToken);
+    if (storedToken is not null)
+    {
+        storedToken.RevokedAtUtc = DateTime.UtcNow;
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    return Results.NoContent();
+}).RequireAuthorization();
+
+auth.MapGet("/me", async (ClaimsPrincipal principal, GarageInventoryPartsFinderDbContext dbContext, CancellationToken cancellationToken) =>
+{
+    var userId = principal.FindFirstValue(ClaimTypes.NameIdentifier);
+    if (!Guid.TryParse(userId, out var parsedUserId))
+    {
+        return Results.Unauthorized();
+    }
+
+    var user = await dbContext.AuthUsers.FindAsync(new object[] { parsedUserId }, cancellationToken);
+    return user is null
+        ? Results.Unauthorized()
+        : Results.Ok(new CurrentUserResponse(user.Id, user.Email, user.DisplayName));
+}).RequireAuthorization();
+
+var workflowItems = app.MapGroup("/api/p-ar-t").RequireAuthorization();
+
+workflowItems.MapGet("/", async (GarageInventoryPartsFinderDbContext dbContext, CancellationToken cancellationToken) =>
+{
+    var items = await dbContext.Set<Part>()
+        .OrderByDescending(item => item.CreatedAtUtc)
+        .Take(50)
+        .ToListAsync(cancellationToken);
+
+    return Results.Ok(items);
+});
+
+workflowItems.MapPost("/", async (
+    CreateWorkflowItemRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    CancellationToken cancellationToken) =>
+{
+    var errors = AuthRequestValidator.ValidateName(request.Name);
+    if (errors.Count > 0)
+    {
+        return Results.ValidationProblem(errors);
+    }
+
+    var item = new Part
+    {
+        Name = request.Name.Trim(),
+        Notes = request.Notes?.Trim()
+    };
+
+    dbContext.Set<Part>().Add(item);
+    await dbContext.SaveChangesAsync(cancellationToken);
+
+    return Results.Created($"/api/p-ar-t/{item.Id}", item);
+});
+
+using (var scope = app.Services.CreateScope())
+{
+    var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DatabaseSeeder");
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<GarageInventoryPartsFinderDbContext>();
+        var passwordHasher = scope.ServiceProvider.GetRequiredService<PasswordHasher>();
+        await DatabaseSeeder.SeedAsync(dbContext, passwordHasher);
+    }
+    catch (Exception exception)
+    {
+        logger.LogWarning(exception, "Development seed data could not be applied. Start PostgreSQL and run migrations to enable seeding.");
+    }
+}
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public sealed record CreateWorkflowItemRequest(string Name, string? Notes);

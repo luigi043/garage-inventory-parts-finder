@@ -90,3 +90,20 @@ npm run dev
 ## Demo Notes
 
 Add screenshots to docs/screenshots/ during Day 5.
+## Day 2 Backend
+
+Completed:
+
+- JWT access-token authentication.
+- Refresh-token rotation.
+- Protected /api/auth/me and /api/p-ar-t routes.
+- Request validation helpers.
+- Demo seed data service.
+- Backend tests for password hashing and validation.
+
+Demo credentials after migrations and seeding:
+
+~~~text
+email: demo@garageinventorypartsfinder.local
+password: Passw0rd!
+~~~
