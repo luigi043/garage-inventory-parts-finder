@@ -25,12 +25,12 @@ This is the active tasklist for the first portfolio sprint.
 
 ## Day 3 - Frontend
 
-- [ ] Add app shell
-- [ ] Add auth screens
-- [ ] Add dashboard
-- [ ] Add list/detail/create/edit screens
-- [ ] Connect frontend to API
-- [ ] Add loading, empty, and error states
+- [x] Add app shell
+- [x] Add auth screens
+- [x] Add dashboard
+- [x] Add list/detail/create/edit screens
+- [x] Connect frontend to API
+- [x] Add loading, empty, and error states
 
 ## Day 4 - Advanced Feature
 

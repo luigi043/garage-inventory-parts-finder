@@ -29,12 +29,12 @@
 
 ## Day 3 - Frontend
 
-- [ ] Add app shell.
-- [ ] Add auth screens.
-- [ ] Add dashboard.
-- [ ] Add list/detail/create/edit screens.
-- [ ] Connect frontend to API.
-- [ ] Add loading, empty, and error states.
+- [x] Add app shell.
+- [x] Add auth screens.
+- [x] Add dashboard.
+- [x] Add list/detail/create/edit screens.
+- [x] Connect frontend to API.
+- [x] Add loading, empty, and error states.
 
 ## Day 4 - Advanced Feature
 
@@ -56,4 +56,5 @@
 
 - [x] Complete Day 1 setup.
 - [x] Complete Day 2 backend foundation.
-- [ ] Next task: add frontend app shell and auth screens.
+- [x] Complete Day 3 frontend workflow.
+- [ ] Next task: implement Day 4 advanced feature.

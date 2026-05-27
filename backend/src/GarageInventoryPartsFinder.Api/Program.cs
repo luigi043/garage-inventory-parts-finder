@@ -41,6 +41,20 @@ builder.Services
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://localhost:5173",
+                "http://127.0.0.1:5173",
+                "https://127.0.0.1:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -49,6 +63,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -199,16 +214,27 @@ auth.MapGet("/me", async (ClaimsPrincipal principal, GarageInventoryPartsFinderD
         : Results.Ok(new CurrentUserResponse(user.Id, user.Email, user.DisplayName));
 }).RequireAuthorization();
 
-var workflowItems = app.MapGroup("/api/p-ar-t").RequireAuthorization();
+var workflowItems = app.MapGroup("/api/part").RequireAuthorization();
 
 workflowItems.MapGet("/", async (GarageInventoryPartsFinderDbContext dbContext, CancellationToken cancellationToken) =>
 {
-    var items = await dbContext.Set<Part>()
+    var items = await dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>()
         .OrderByDescending(item => item.CreatedAtUtc)
         .Take(50)
         .ToListAsync(cancellationToken);
 
     return Results.Ok(items);
+});
+
+workflowItems.MapGet("/{id:guid}", async (
+    Guid id,
+    GarageInventoryPartsFinderDbContext dbContext,
+    CancellationToken cancellationToken) =>
+{
+    var item = await dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>().FindAsync(new object[] { id }, cancellationToken);
+    return item is null
+        ? Results.NotFound()
+        : Results.Ok(item);
 });
 
 workflowItems.MapPost("/", async (
@@ -222,18 +248,44 @@ workflowItems.MapPost("/", async (
         return Results.ValidationProblem(errors);
     }
 
-    var item = new Part
+    var item = new GarageInventoryPartsFinder.Domain.Entities.Part
     {
         Name = request.Name.Trim(),
         Notes = request.Notes?.Trim()
     };
 
-    dbContext.Set<Part>().Add(item);
+    dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>().Add(item);
     await dbContext.SaveChangesAsync(cancellationToken);
 
-    return Results.Created($"/api/p-ar-t/{item.Id}", item);
+    return Results.Created($"/api/part/{item.Id}", item);
 });
 
+workflowItems.MapPut("/{id:guid}", async (
+    Guid id,
+    CreateWorkflowItemRequest request,
+    GarageInventoryPartsFinderDbContext dbContext,
+    CancellationToken cancellationToken) =>
+{
+    var errors = AuthRequestValidator.ValidateName(request.Name);
+    if (errors.Count > 0)
+    {
+        return Results.ValidationProblem(errors);
+    }
+
+    var item = await dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>().FindAsync(new object[] { id }, cancellationToken);
+    if (item is null)
+    {
+        return Results.NotFound();
+    }
+
+    item.Name = request.Name.Trim();
+    item.Notes = request.Notes?.Trim();
+    item.UpdatedAtUtc = DateTime.UtcNow;
+
+    await dbContext.SaveChangesAsync(cancellationToken);
+
+    return Results.Ok(item);
+});
 using (var scope = app.Services.CreateScope())
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DatabaseSeeder");

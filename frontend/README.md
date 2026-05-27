@@ -1,30 +1,31 @@
-# Frontend
+# Garage Inventory And Parts Finder Frontend
 
-Status: Day 1 scaffold complete.
+Day 3 React + TypeScript interface for the protected MVP workflow.
 
-## Created Structure
+## Run
 
-`	ext
-frontend/
-  index.html
-  package.json
-  vite.config.ts
-  tsconfig.json
-  src/
-    App.tsx
-    main.tsx
-    styles.css
-    lib/
-    features/
-`
-
-## Commands
-
-`ash
+~~~bash
 npm install
 npm run dev
-`
+~~~
 
-## Next Frontend Task
+Set the API base URL when the backend is not running on the default port:
 
-Build the authenticated app shell, dashboard, and workflow screens during Day 3.
+~~~bash
+VITE_API_BASE_URL=http://localhost:5000
+~~~
+
+## Implemented
+
+- JWT sign-in and registration screens.
+- Persistent local session storage with refresh-token recovery.
+- Dashboard, operations overview, and Part workspace.
+- Connected list, detail, create, and edit flows for /api/part.
+- Loading, empty, and error states.
+
+Demo login after backend migrations and seed:
+
+~~~text
+email: demo@garageinventorypartsfinder.local
+password: Passw0rd!
+~~~

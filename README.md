@@ -96,7 +96,7 @@ Completed:
 
 - JWT access-token authentication.
 - Refresh-token rotation.
-- Protected /api/auth/me and /api/p-ar-t routes.
+- Protected /api/auth/me and /api/part routes.
 - Request validation helpers.
 - Demo seed data service.
 - Backend tests for password hashing and validation.
@@ -106,4 +106,23 @@ Demo credentials after migrations and seeding:
 ~~~text
 email: demo@garageinventorypartsfinder.local
 password: Passw0rd!
+~~~
+
+## Day 3 Frontend
+
+Completed:
+
+- React app shell with dashboard, record workspace, and operations view.
+- Sign-in and registration screens connected to JWT endpoints.
+- Persistent session storage with refresh-token recovery.
+- Connected list, detail, create, and edit workflow for /api/part.
+- Loading, empty, and error states for the main data flow.
+- CORS support for the Vite development server.
+
+Frontend check:
+
+~~~bash
+cd frontend
+npm install
+npm run build
 ~~~
