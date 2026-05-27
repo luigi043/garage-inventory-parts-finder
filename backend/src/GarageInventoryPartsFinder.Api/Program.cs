@@ -286,6 +286,27 @@ workflowItems.MapPut("/{id:guid}", async (
 
     return Results.Ok(item);
 });
+var advancedFeature = app.MapGroup("/api/advanced-feature").RequireAuthorization();
+
+advancedFeature.MapGet("/", async (GarageInventoryPartsFinderDbContext dbContext, CancellationToken cancellationToken) =>
+{
+    var connectedRecords = await dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>().CountAsync(cancellationToken);
+    var recentRecords = await dbContext.Set<GarageInventoryPartsFinder.Domain.Entities.Part>()
+        .OrderByDescending(item => item.UpdatedAtUtc ?? item.CreatedAtUtc)
+        .Take(5)
+        .Select(item => item.Name)
+        .ToListAsync(cancellationToken);
+
+    var snapshot = GarageInventoryPartsFinder.Application.Advanced.AdvancedFeaturePlanner.Build(
+        "Garage Inventory And Parts Finder",
+        "Compatibility checker for vehicles, parts, and supplier options.",
+        "Part",
+        connectedRecords,
+        8,
+        recentRecords);
+
+    return Results.Ok(snapshot);
+});
 using (var scope = app.Services.CreateScope())
 {
     var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("DatabaseSeeder");

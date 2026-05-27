@@ -34,10 +34,10 @@ This is the active tasklist for the first portfolio sprint.
 
 ## Day 4 - Advanced Feature
 
-- [ ] Implement advanced feature
-- [ ] Add frontend support
-- [ ] Add backend support
-- [ ] Add at least one test or documented manual test
+- [x] Implement advanced feature
+- [x] Add frontend support
+- [x] Add backend support
+- [x] Add at least one test or documented manual test
 
 ## Day 5 - Portfolio Finish
 

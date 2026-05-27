@@ -38,10 +38,10 @@
 
 ## Day 4 - Advanced Feature
 
-- [ ] Implement advanced feature.
-- [ ] Add frontend support.
-- [ ] Add backend support.
-- [ ] Add at least one test or documented manual test.
+- [x] Implement advanced feature.
+- [x] Add frontend support.
+- [x] Add backend support.
+- [x] Add at least one test or documented manual test.
 
 ## Day 5 - Portfolio Finish
 
@@ -57,4 +57,5 @@
 - [x] Complete Day 1 setup.
 - [x] Complete Day 2 backend foundation.
 - [x] Complete Day 3 frontend workflow.
-- [ ] Next task: implement Day 4 advanced feature.
+- [x] Complete Day 4 advanced feature.
+- [ ] Next task: finish Day 5 portfolio polish.

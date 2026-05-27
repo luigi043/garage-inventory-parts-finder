@@ -5,6 +5,7 @@ import {
   clearStoredSession,
   createWorkflowItem,
   getCurrentUser,
+  getAdvancedFeature,
   getStoredSession,
   listWorkflowItems,
   login,
@@ -13,6 +14,7 @@ import {
   register,
   saveSession,
   updateWorkflowItem,
+  type AdvancedFeatureSnapshot,
   type Session,
   type WorkflowItem,
   type WorkflowItemDraft,
@@ -86,6 +88,9 @@ export function App() {
   const [editDraft, setEditDraft] = useState<WorkflowItemDraft>(emptyDraft);
   const [savingCreate, setSavingCreate] = useState(false);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [advancedFeature, setAdvancedFeature] = useState<AdvancedFeatureSnapshot | null>(null);
+  const [advancedState, setAdvancedState] = useState<LoadState>("idle");
+  const [advancedError, setAdvancedError] = useState("");
 
   const selectedItem = useMemo(
     () => items.find((item) => item.id === selectedId) ?? null,
@@ -120,6 +125,11 @@ export function App() {
     });
   }, [selectedItem]);
 
+  useEffect(() => {
+    if (view === "operations" && session) {
+      void loadAdvancedFeature(session);
+    }
+  }, [view, session]);
   async function bootstrap(activeSession: Session) {
     setAuthLoading(true);
     try {
@@ -162,6 +172,23 @@ export function App() {
     }
   }
 
+
+  async function loadAdvancedFeature(activeSession = session) {
+    if (!activeSession) {
+      return;
+    }
+
+    setAdvancedState("loading");
+    setAdvancedError("");
+    try {
+      const snapshot = await getAdvancedFeature(activeSession);
+      setAdvancedFeature(snapshot);
+      setAdvancedState("idle");
+    } catch (error) {
+      setAdvancedState("error");
+      setAdvancedError(getErrorMessage(error));
+    }
+  }
   async function handleAuthSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setAuthSubmitting(true);
@@ -552,14 +579,71 @@ export function App() {
               <h3>{project.targetUser}</h3>
             </article>
             <article>
-              <p className="eyebrow">API contract</p>
-              <h3>/api/{project.entityRoute}</h3>
-              <span>GET, POST, PUT with JWT bearer auth</span>
+              <p className="eyebrow">Advanced API</p>
+              <h3>/api/advanced-feature</h3>
+              <span>Protected readiness snapshot powered by live {project.entityName} records</span>
             </article>
             <article>
               <p className="eyebrow">Advanced feature</p>
               <h3>{project.advancedFeature || "Planned for Day 4"}</h3>
             </article>
+
+            <section className="advanced-feature-panel">
+              <div className="panel-heading">
+                <div>
+                  <p className="eyebrow">Day 4 implementation</p>
+                  <h3>Advanced feature readiness</h3>
+                </div>
+                <button
+                  className="ghost-button compact"
+                  type="button"
+                  onClick={() => void loadAdvancedFeature()}
+                >
+                  Refresh
+                </button>
+              </div>
+
+              {advancedState === "loading" && <p className="status-line">Calculating feature readiness...</p>}
+              {advancedError && <p className="error-banner">{advancedError}</p>}
+
+              {advancedFeature ? (
+                <div className="advanced-feature-grid">
+                  <div className="readiness-card">
+                    <span>Readiness</span>
+                    <strong>{advancedFeature.readinessScore}%</strong>
+                    <em>{advancedFeature.maturity}</em>
+                  </div>
+
+                  <div className="insight-list">
+                    <p className="eyebrow">Signals</p>
+                    {advancedFeature.highlights.map((highlight) => (
+                      <span key={highlight}>{highlight}</span>
+                    ))}
+                  </div>
+
+                  <div className="insight-list">
+                    <p className="eyebrow">Next actions</p>
+                    {advancedFeature.nextActions.map((action) => (
+                      <span key={action}>{action}</span>
+                    ))}
+                  </div>
+
+                  <div className="recent-records">
+                    <p className="eyebrow">Recent records</p>
+                    {advancedFeature.recentRecords.length > 0 ? (
+                      advancedFeature.recentRecords.map((record) => <span key={record}>{record}</span>)
+                    ) : (
+                      <span>Create a workflow record to feed this panel.</span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div className="empty-state">
+                  <strong>Advanced feature snapshot not loaded</strong>
+                  <span>Refresh this panel after signing in and creating workflow data.</span>
+                </div>
+              )}
+            </section>
           </section>
         )}
       </section>

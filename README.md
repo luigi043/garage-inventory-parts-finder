@@ -126,3 +126,21 @@ cd frontend
 npm install
 npm run build
 ~~~
+
+## Day 4 Advanced Feature
+
+Completed:
+
+- Protected /api/advanced-feature endpoint for Compatibility checker for vehicles, parts, and supplier options.
+- Application-layer AdvancedFeaturePlanner that converts workflow records into a readiness snapshot.
+- Operations UI panel that shows readiness score, maturity, signals, next actions, and recent records.
+- Backend tests for project-specific advanced feature snapshot generation.
+
+Verification:
+
+~~~bash
+cd backend
+dotnet test GarageInventoryPartsFinder.slnx
+cd ../frontend
+npm run build
+~~~

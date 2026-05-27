@@ -186,3 +186,21 @@ export function updateWorkflowItem(
     session,
   );
 }
+// Day 4 advanced feature API
+export type AdvancedFeatureSnapshot = {
+  projectName: string;
+  featureName: string;
+  entityName: string;
+  connectedRecords: number;
+  moduleCount: number;
+  readinessScore: number;
+  maturity: string;
+  highlights: string[];
+  nextActions: string[];
+  recentRecords: string[];
+  generatedAtUtc: string;
+};
+
+export function getAdvancedFeature(session: Session) {
+  return apiRequest<AdvancedFeatureSnapshot>("/api/advanced-feature", {}, session);
+}
