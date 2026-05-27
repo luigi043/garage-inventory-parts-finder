@@ -41,9 +41,9 @@ This is the active tasklist for the first portfolio sprint.
 
 ## Day 5 - Portfolio Finish
 
-- [ ] Add screenshots
-- [ ] Add demo credentials
-- [ ] Add test commands
-- [ ] Add deployment notes
-- [ ] Polish UI
-- [ ] Finalize README
+- [x] Add screenshots
+- [x] Add demo credentials
+- [x] Add test commands
+- [x] Add deployment notes
+- [x] Polish UI
+- [x] Finalize README

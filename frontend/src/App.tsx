@@ -279,7 +279,7 @@ export function App() {
     return (
       <main className="auth-page">
         <section className="auth-intro">
-          <p className="eyebrow">Day 3 frontend</p>
+          <p className="eyebrow">Portfolio MVP</p>
           <h1>{project.title}</h1>
           <p>{project.objective}</p>
         </section>
@@ -292,13 +292,13 @@ export function App() {
     return (
       <main className="auth-page">
         <section className="auth-intro">
-          <p className="eyebrow">Day 3 frontend workflow</p>
+          <p className="eyebrow">Portfolio MVP workflow</p>
           <h1>{project.title}</h1>
           <p>{project.objective}</p>
           <div className="proof-strip">
             <span>{project.entityName}</span>
             <span>{project.coreEntities.length} modules</span>
-            <span>JWT ready</span>
+            <span>JWT + API ready</span>
           </div>
         </section>
 
@@ -391,7 +391,7 @@ export function App() {
       <aside className="sidebar">
         <div>
           <div className="brand-mark">{getInitials(project.title)}</div>
-          <p className="eyebrow">MVP workspace</p>
+          <p className="eyebrow">Portfolio workspace</p>
           <h1>{project.title}</h1>
         </div>
 
@@ -422,7 +422,7 @@ export function App() {
       <section className="workspace">
         <header className="topbar">
           <div>
-            <p className="eyebrow">Day 3 connected frontend</p>
+            <p className="eyebrow">Portfolio-ready full stack</p>
             <h2>{view === "records" ? `${project.entityName} workspace` : project.title}</h2>
             <p>{view === "dashboard" ? project.workflow : project.targetUser}</p>
           </div>
@@ -585,13 +585,13 @@ export function App() {
             </article>
             <article>
               <p className="eyebrow">Advanced feature</p>
-              <h3>{project.advancedFeature || "Planned for Day 4"}</h3>
+              <h3>{project.advancedFeature || "Ready for portfolio demo"}</h3>
             </article>
 
             <section className="advanced-feature-panel">
               <div className="panel-heading">
                 <div>
-                  <p className="eyebrow">Day 4 implementation</p>
+                  <p className="eyebrow">Advanced feature</p>
                   <h3>Advanced feature readiness</h3>
                 </div>
                 <button

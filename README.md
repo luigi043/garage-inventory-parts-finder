@@ -1,6 +1,8 @@
 # Garage Inventory And Parts Finder
 
-> Portfolio-level full-stack project planned as a 5-day .NET MVP.
+> Portfolio-ready full-stack MVP completed in a 5-day sprint.
+
+![Dashboard preview](docs/screenshots/day5-dashboard-preview.svg)
 
 ## Objective
 
@@ -18,9 +20,14 @@ The user adds vehicles and parts, marks compatibility, tracks stock location and
 
 Compatibility checker for vehicles, parts, and supplier options.
 
-## Recommended Stack
+## Stack
 
-ASP.NET Core Web API, React, TypeScript, PostgreSQL, EF Core, JWT auth, and Docker Compose.
+- ASP.NET Core Web API
+- Entity Framework Core
+- PostgreSQL with Docker Compose
+- JWT access tokens and refresh tokens
+- React, TypeScript, and Vite
+- xUnit backend tests
 
 ## Core Entities
 
@@ -33,114 +40,115 @@ ASP.NET Core Web API, React, TypeScript, PostgreSQL, EF Core, JWT auth, and Dock
 - PurchaseRecord
 - Tool
 
-## 5-Day MVP Plan
+## Completed Sprint
 
-- Day 1: Scope, architecture, scaffold backend/frontend, database setup.
-- Day 2: Backend auth, domain entities, validation, seed data, tests.
-- Day 3: Frontend dashboard, forms, routing, API integration.
-- Day 4: Advanced feature implementation and workflow polish.
-- Day 5: Tests, screenshots, README, deployment notes, final polish.
+- Day 1: repository, architecture, backend/frontend scaffolds, Docker database, first migration.
+- Day 2: JWT auth, refresh tokens, protected endpoints, seed data, validation, backend tests.
+- Day 3: React app shell, auth screens, dashboard, CRUD workflow, API client, UI states.
+- Day 4: protected advanced-feature endpoint, planner service, operations panel, tests.
+- Day 5: screenshots, demo credentials, test commands, deployment notes, README polish.
 
-## Current Status
+## Demo Credentials
 
-- Repository scaffold created.
-- Backend ASP.NET Core solution created in ackend/GarageInventoryPartsFinder.slnx.
-- Frontend React TypeScript app scaffold created in rontend/.
-- PostgreSQL Docker Compose setup added.
-- EF Core persistence layer and InitialCreate migration added.
-- Day 1 setup complete.
+~~~text
+Email: demo@garageinventorypartsfinder.local
+Password: Passw0rd!
+~~~
+
+The demo user is seeded when the backend starts after migrations are applied.
 
 ## Local Development
 
 Copy environment defaults:
 
-`ash
+~~~powershell
 copy .env.example .env
-`
+~~~
 
 Start PostgreSQL:
 
-`ash
+~~~powershell
 docker compose up -d
-`
+~~~
+
+Apply database migrations:
+
+~~~powershell
+cd backend
+dotnet ef database update --project src/GarageInventoryPartsFinder.Infrastructure --startup-project src/GarageInventoryPartsFinder.Api --context GarageInventoryPartsFinderDbContext
+~~~
+
+Run the backend:
+
+~~~powershell
+dotnet run --project src/GarageInventoryPartsFinder.Api
+~~~
+
+Run the frontend:
+
+~~~powershell
+cd ..\frontend
+npm install
+npm run dev
+~~~
+
+Default frontend API URL:
+
+~~~text
+http://localhost:5000
+~~~
+
+## Test Commands
 
 Backend:
 
-`ash
+~~~powershell
 cd backend
-dotnet restore GarageInventoryPartsFinder.slnx
-dotnet ef database update --project src/GarageInventoryPartsFinder.Infrastructure --startup-project src/GarageInventoryPartsFinder.Api --context GarageInventoryPartsFinderDbContext
-dotnet run --project src/GarageInventoryPartsFinder.Api
-`
+dotnet test GarageInventoryPartsFinder.slnx
+~~~
 
 Frontend:
 
-`ash
+~~~powershell
 cd frontend
 npm install
-npm run dev
-`
+npm run build
+~~~
+
+## API Surface
+
+- POST /api/auth/register
+- POST /api/auth/login
+- POST /api/auth/refresh
+- POST /api/auth/logout
+- GET /api/auth/me
+- GET /api/part
+- GET /api/part/{id}
+- POST /api/part
+- PUT /api/part/{id}
+- GET /api/advanced-feature
 
 ## Database
 
-- Database: $DatabaseName
-- Host port: $Port
+- Database: garage_inventory_parts_finder
+- Local port: 5422
 - Provider: PostgreSQL via Npgsql Entity Framework Core provider
 
-## Demo Notes
+## Deployment Notes
 
-Add screenshots to docs/screenshots/ during Day 5.
-## Day 2 Backend
+Recommended production path:
 
-Completed:
+- Deploy PostgreSQL to Azure Database for PostgreSQL or another managed PostgreSQL host.
+- Deploy the ASP.NET Core API to Azure App Service or Azure Container Apps.
+- Deploy the React frontend to Azure Static Web Apps, Vercel, or Netlify.
+- Set ConnectionStrings__DefaultConnection, Jwt__Issuer, Jwt__Audience, and a strong Jwt__SigningKey in the hosting environment.
+- Set VITE_API_BASE_URL to the deployed API URL before building the frontend.
+- Run EF Core migrations during release or as a controlled deployment step.
 
-- JWT access-token authentication.
-- Refresh-token rotation.
-- Protected /api/auth/me and /api/part routes.
-- Request validation helpers.
-- Demo seed data service.
-- Backend tests for password hashing and validation.
+## Portfolio Notes
 
-Demo credentials after migrations and seeding:
-
-~~~text
-email: demo@garageinventorypartsfinder.local
-password: Passw0rd!
-~~~
-
-## Day 3 Frontend
-
-Completed:
-
-- React app shell with dashboard, record workspace, and operations view.
-- Sign-in and registration screens connected to JWT endpoints.
-- Persistent session storage with refresh-token recovery.
-- Connected list, detail, create, and edit workflow for /api/part.
-- Loading, empty, and error states for the main data flow.
-- CORS support for the Vite development server.
-
-Frontend check:
-
-~~~bash
-cd frontend
-npm install
-npm run build
-~~~
-
-## Day 4 Advanced Feature
-
-Completed:
-
-- Protected /api/advanced-feature endpoint for Compatibility checker for vehicles, parts, and supplier options.
-- Application-layer AdvancedFeaturePlanner that converts workflow records into a readiness snapshot.
-- Operations UI panel that shows readiness score, maturity, signals, next actions, and recent records.
-- Backend tests for project-specific advanced feature snapshot generation.
-
-Verification:
-
-~~~bash
-cd backend
-dotnet test GarageInventoryPartsFinder.slnx
-cd ../frontend
-npm run build
-~~~
+- Screenshot asset: docs/screenshots/day5-dashboard-preview.svg
+- Demo guide: docs/demo.md
+- Testing guide: docs/testing.md
+- Deployment guide: docs/deployment.md
+- Portfolio summary: docs/portfolio-summary.md

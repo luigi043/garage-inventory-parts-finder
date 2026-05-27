@@ -672,3 +672,84 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 }
+/* Day 5 portfolio polish */
+::selection {
+  background: #1f7a68;
+  color: #f9fff9;
+}
+
+.topbar {
+  border-bottom: 1px solid #dbe4df;
+  padding-bottom: 18px;
+}
+
+.primary-button,
+.ghost-button,
+.record-row,
+.nav-list button,
+.segmented-control button,
+.icon-button {
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.primary-button:hover,
+.ghost-button:hover,
+.record-row:hover,
+.nav-list button:hover,
+.segmented-control button:hover,
+.icon-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-button:focus-visible,
+.ghost-button:focus-visible,
+.record-row:focus-visible,
+.nav-list button:focus-visible,
+.segmented-control button:focus-visible,
+.icon-button:focus-visible,
+.stacked-form input:focus-visible,
+.stacked-form textarea:focus-visible {
+  outline: 3px solid rgba(31, 122, 104, 0.32);
+  outline-offset: 2px;
+}
+
+.metric-card,
+.workflow-panel,
+.quick-create,
+.list-panel,
+.panel-block,
+.operations-grid article,
+.advanced-feature-panel {
+  box-shadow: 0 18px 50px rgba(23, 33, 30, 0.06);
+}
+
+.auth-panel {
+  animation: panel-in 420ms ease-out;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

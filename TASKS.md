@@ -45,12 +45,12 @@
 
 ## Day 5 - Portfolio Finish
 
-- [ ] Add screenshots.
-- [ ] Add demo credentials.
-- [ ] Add test commands.
-- [ ] Add deployment notes.
-- [ ] Polish UI.
-- [ ] Finalize README.
+- [x] Add screenshots.
+- [x] Add demo credentials.
+- [x] Add test commands.
+- [x] Add deployment notes.
+- [x] Polish UI.
+- [x] Finalize README.
 
 ## Active Tasks
 
@@ -58,4 +58,5 @@
 - [x] Complete Day 2 backend foundation.
 - [x] Complete Day 3 frontend workflow.
 - [x] Complete Day 4 advanced feature.
-- [ ] Next task: finish Day 5 portfolio polish.
+- [x] Complete Day 5 portfolio finish.
+- [x] 5-day MVP sprint complete.

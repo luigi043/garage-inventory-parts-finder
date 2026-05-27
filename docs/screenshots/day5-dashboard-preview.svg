@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Garage Inventory And Parts Finder portfolio preview</title>
+  <desc id="desc">Dashboard-style preview generated for the Day 5 portfolio finish.</desc>
+  <rect width="1440" height="900" fill="#edf1ec"/>
+  <rect x="48" y="48" width="284" height="804" rx="10" fill="#f8faf6" stroke="#d3ddd7"/>
+  <rect x="84" y="88" width="58" height="58" rx="8" fill="#1f7a68"/>
+  <text x="113" y="125" text-anchor="middle" font-family="Segoe UI, Arial" font-size="20" font-weight="800" fill="#f9fff9">MVP</text>
+  <text x="84" y="182" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#65726d">PORTFOLIO WORKSPACE</text>
+  <text x="84" y="222" font-family="Segoe UI, Arial" font-size="29" font-weight="800" fill="#17211e">Garage Inventory And Parts Finder</text>
+  <rect x="84" y="302" width="212" height="46" rx="8" fill="#ffffff" stroke="#d3ddd7"/>
+  <text x="108" y="332" font-family="Segoe UI, Arial" font-size="16" font-weight="700" fill="#17211e">Dashboard</text>
+  <rect x="84" y="364" width="212" height="46" rx="8" fill="#ffffff" stroke="#d3ddd7"/>
+  <text x="108" y="394" font-family="Segoe UI, Arial" font-size="16" font-weight="700" fill="#17211e">Part</text>
+  <rect x="84" y="426" width="212" height="46" rx="8" fill="#183a34"/>
+  <text x="108" y="456" font-family="Segoe UI, Arial" font-size="16" font-weight="800" fill="#f9fff9">Operations</text>
+  <rect x="372" y="68" width="1016" height="104" rx="10" fill="#fbfcf8" stroke="#d3ddd7"/>
+  <text x="404" y="104" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#65726d">PORTFOLIO-READY FULL STACK</text>
+  <text x="404" y="145" font-family="Segoe UI, Arial" font-size="38" font-weight="800" fill="#17211e">Garage Inventory And Parts Finder</text>
+  <rect x="372" y="212" width="302" height="172" rx="10" fill="#183a34"/>
+  <text x="404" y="252" font-family="Segoe UI, Arial" font-size="16" font-weight="800" fill="#f9fff9">Total Part</text>
+  <text x="404" y="330" font-family="Segoe UI, Arial" font-size="72" font-weight="800" fill="#f9fff9">Live</text>
+  <rect x="700" y="212" width="302" height="172" rx="10" fill="#fbfcf8" stroke="#d3ddd7"/>
+  <text x="732" y="252" font-family="Segoe UI, Arial" font-size="16" font-weight="800" fill="#65726d">Core modules</text>
+  <text x="732" y="330" font-family="Segoe UI, Arial" font-size="72" font-weight="800" fill="#17211e">8</text>
+  <rect x="1028" y="212" width="360" height="172" rx="10" fill="#fbfcf8" stroke="#d3ddd7"/>
+  <text x="1060" y="252" font-family="Segoe UI, Arial" font-size="16" font-weight="800" fill="#65726d">Demo account</text>
+  <text x="1060" y="304" font-family="Segoe UI, Arial" font-size="24" font-weight="800" fill="#17211e">demo@garageinventorypartsfinder.local</text>
+  <text x="1060" y="340" font-family="Segoe UI, Arial" font-size="18" font-weight="700" fill="#65726d">Password: Passw0rd!</text>
+  <rect x="372" y="424" width="1016" height="190" rx="10" fill="#fbfcf8" stroke="#d3ddd7"/>
+  <text x="404" y="466" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#65726d">MAIN WORKFLOW</text>
+  <text x="404" y="514" font-family="Segoe UI, Arial" font-size="28" font-weight="800" fill="#17211e">The user adds vehicles and parts, marks compatibility, tracks stock location and supplier, then searches for parts that fit a selected car.</text>
+  <rect x="404" y="550" width="236" height="42" rx="8" fill="#eef4ee"/>
+  <text x="424" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#1f7a68">01</text>
+  <text x="468" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">User</text>
+  <rect x="660" y="550" width="236" height="42" rx="8" fill="#eef4ee"/>
+  <text x="680" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#1f7a68">02</text>
+  <text x="724" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">Vehicle</text>
+  <rect x="916" y="550" width="236" height="42" rx="8" fill="#eef4ee"/>
+  <text x="936" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#1f7a68">03</text>
+  <text x="980" y="577" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">Part</text>
+  <rect x="372" y="654" width="1016" height="198" rx="10" fill="#fbfcf8" stroke="#d3ddd7"/>
+  <text x="404" y="696" font-family="Segoe UI, Arial" font-size="14" font-weight="800" fill="#65726d">ADVANCED FEATURE</text>
+  <text x="404" y="744" font-family="Segoe UI, Arial" font-size="30" font-weight="800" fill="#17211e">Compatibility checker for vehicles, parts, and supplier options.</text>
+  <rect x="404" y="778" width="220" height="42" rx="8" fill="#eef4ee"/>
+  <text x="426" y="805" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">Readiness snapshot</text>
+  <rect x="644" y="778" width="220" height="42" rx="8" fill="#eef4ee"/>
+  <text x="666" y="805" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">Protected API</text>
+  <rect x="884" y="778" width="220" height="42" rx="8" fill="#eef4ee"/>
+  <text x="906" y="805" font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#17211e">Portfolio polish</text>
+</svg>
