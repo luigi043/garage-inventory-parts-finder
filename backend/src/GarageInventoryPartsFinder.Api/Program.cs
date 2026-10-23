@@ -45,11 +45,16 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("Frontend", policy =>
     {
-        policy.WithOrigins(
-                "http://localhost:5173",
-                "https://localhost:5173",
-                "http://127.0.0.1:5173",
-                "https://127.0.0.1:5173")
+        policy
+            .SetIsOriginAllowed(origin =>
+            {
+                if (!System.Uri.TryCreate(origin, System.UriKind.Absolute, out var uri))
+                {
+                    return false;
+                }
+
+                return uri.Host is "localhost" or "127.0.0.1";
+            })
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
@@ -61,8 +66,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors("Frontend");
 app.UseAuthentication();
 app.UseAuthorization();
